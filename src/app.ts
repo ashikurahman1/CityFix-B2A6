@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 app.get("/", (_req: Request, res: Response) => {
   sendResponse(res, {
     message: "CityFix API - City Complaint & Service Request Platform",
-    data: { version: "v1", basePath: "/api/v1", health: "/health", environment: env.NODE_ENV },
+    data: { version: "v1", basePath: "/api/v1", health: "/health", environment: env.isProduction ? "production" : env.NODE_ENV },
   });
 });
 
