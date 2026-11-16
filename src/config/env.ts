@@ -44,5 +44,7 @@ if (!parsed.success) {
 export const env = {
   ...parsed.data,
   APP_URL: parsed.data.APP_URL.replace(/\/+$/, ""),
-  isProduction: parsed.data.NODE_ENV === "production",
+  // Serverless runtimes are always production, even when NODE_ENV is not set there.
+  isProduction:
+    parsed.data.NODE_ENV === "production" || Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME),
 };
