@@ -13,5 +13,5 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true
   },
-  "include": ["src", "prisma", "tsup.config.ts"]
+  "include": ["src", "prisma", "netlify", "tsup.config.ts"]
 }
