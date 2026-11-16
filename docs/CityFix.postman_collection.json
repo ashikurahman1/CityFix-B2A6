@@ -918,7 +918,9 @@
                 "exec": [
                   "const json = pm.response.json();",
                   "if (json.success) {",
-                  "  const free = json.data.find((c) => Number(c.serviceFee) === 0);",
+                  "  const isFree = (c) => Number(c.serviceFee) === 0;",
+                "  // Prefer a Roads category so the seeded Roads staff account can claim / work on it.",
+                "  const free = json.data.find((c) => isFree(c) && c.department.name.startsWith(\"Roads\")) || json.data.find(isFree);",
                   "  const paid = json.data.find((c) => Number(c.serviceFee) > 0);",
                   "  if (free) pm.collectionVariables.set(\"categoryId\", free.id);",
                   "  if (paid) pm.collectionVariables.set(\"paidCategoryId\", paid.id);",
