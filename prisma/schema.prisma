@@ -1,0 +1,303 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────── Enums ─────────────────────────
+
+enum Role {
+  CITIZEN
+  STAFF
+  ADMIN
+}
+
+enum RequestType {
+  COMPLAINT // free: pothole, broken street light, ...
+  SERVICE // paid: trade licence, bulk waste pickup, ...
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ComplaintStatus {
+  PENDING_PAYMENT
+  SUBMITTED
+  ASSIGNED
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+  REOPENED
+  REJECTED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+  EXPIRED
+  REFUNDED
+}
+
+enum FeeStatus {
+  NOT_REQUIRED
+  UNPAID
+  PAID
+  REFUNDED
+}
+
+// ───────────────────────── Models ─────────────────────────
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  passwordHash String?
+  googleId     String?   @unique
+  role         Role      @default(CITIZEN)
+  phone        String?
+  address      String?
+  avatarUrl    String?
+  isActive     Boolean   @default(true)
+  departmentId String?
+  lastLoginAt  DateTime?
+  deletedAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  department         Department?     @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  refreshTokens      RefreshToken[]
+  complaints         Complaint[]     @relation("CitizenComplaints")
+  assignedComplaints Complaint[]     @relation("AssignedComplaints")
+  statusChanges      StatusHistory[]
+  comments           Comment[]
+  feedbacks          Feedback[]
+  payments           Payment[]
+  attachments        Attachment[]
+  auditLogs          AuditLog[]
+
+  @@index([role])
+  @@index([departmentId])
+  @@index([deletedAt])
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+model Department {
+  id           String    @id @default(uuid())
+  name         String    @unique
+  description  String?
+  contactEmail String?
+  contactPhone String?
+  deletedAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  staff      User[]
+  categories Category[]
+  complaints Complaint[]
+
+  @@index([deletedAt])
+  @@map("departments")
+}
+
+model Category {
+  id           String      @id @default(uuid())
+  name         String      @unique
+  description  String?
+  type         RequestType @default(COMPLAINT)
+  departmentId String
+  slaHours     Int         @default(72)
+  serviceFee   Decimal     @default(0) @db.Decimal(10, 2)
+  isActive     Boolean     @default(true)
+  deletedAt    DateTime?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  department Department  @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  complaints Complaint[]
+
+  @@index([departmentId])
+  @@index([type, isActive])
+  @@map("categories")
+}
+
+model Complaint {
+  id             String          @id @default(uuid())
+  trackingCode   String          @unique
+  title          String
+  description    String
+  type           RequestType
+  priority       Priority        @default(MEDIUM)
+  status         ComplaintStatus @default(SUBMITTED)
+  address        String
+  ward           String?
+  latitude       Float?
+  longitude      Float?
+  feeAmount      Decimal         @default(0) @db.Decimal(10, 2)
+  feeStatus      FeeStatus       @default(NOT_REQUIRED)
+  slaDueAt       DateTime?
+  assignedAt     DateTime?
+  resolvedAt     DateTime?
+  closedAt       DateTime?
+  resolutionNote String?
+  citizenId      String
+  categoryId     String
+  departmentId   String
+  assignedToId   String?
+  deletedAt      DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  citizen     User            @relation("CitizenComplaints", fields: [citizenId], references: [id], onDelete: Restrict)
+  assignedTo  User?           @relation("AssignedComplaints", fields: [assignedToId], references: [id], onDelete: SetNull)
+  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  department  Department      @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  history     StatusHistory[]
+  comments    Comment[]
+  attachments Attachment[]
+  payments    Payment[]
+  feedback    Feedback?
+
+  @@index([citizenId, createdAt])
+  @@index([departmentId, status])
+  @@index([assignedToId, status])
+  @@index([status, slaDueAt])
+  @@index([categoryId])
+  @@index([ward])
+  @@index([deletedAt])
+  @@map("complaints")
+}
+
+model StatusHistory {
+  id          String           @id @default(uuid())
+  complaintId String
+  fromStatus  ComplaintStatus?
+  toStatus    ComplaintStatus
+  note        String?
+  changedById String?
+  createdAt   DateTime         @default(now())
+
+  complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  changedBy User?     @relation(fields: [changedById], references: [id], onDelete: SetNull)
+
+  @@index([complaintId, createdAt])
+  @@map("status_history")
+}
+
+model Comment {
+  id          String    @id @default(uuid())
+  complaintId String
+  authorId    String
+  body        String
+  isInternal  Boolean   @default(false) // internal notes are hidden from citizens
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([complaintId, createdAt])
+  @@map("comments")
+}
+
+model Attachment {
+  id           String   @id @default(uuid())
+  complaintId  String
+  uploadedById String
+  url          String
+  publicId     String
+  fileName     String
+  mimeType     String
+  sizeBytes    Int
+  createdAt    DateTime @default(now())
+
+  complaint  Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  uploadedBy User      @relation(fields: [uploadedById], references: [id], onDelete: Restrict)
+
+  @@index([complaintId])
+  @@map("attachments")
+}
+
+model Feedback {
+  id          String   @id @default(uuid())
+  complaintId String   @unique
+  citizenId   String
+  rating      Int // 1..5, enforced by a CHECK constraint in the migration
+  comment     String?
+  createdAt   DateTime @default(now())
+
+  complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  citizen   User      @relation(fields: [citizenId], references: [id], onDelete: Restrict)
+
+  @@index([citizenId])
+  @@map("feedbacks")
+}
+
+model Payment {
+  id                    String        @id @default(uuid())
+  complaintId           String
+  userId                String
+  amount                Decimal       @db.Decimal(10, 2)
+  currency              String
+  status                PaymentStatus @default(PENDING)
+  provider              String        @default("STRIPE")
+  stripeSessionId       String?       @unique
+  stripePaymentIntentId String?
+  stripeRefundId        String?
+  checkoutUrl           String?
+  paidAt                DateTime?
+  refundedAt            DateTime?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Restrict)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([complaintId, status])
+  @@index([userId, createdAt])
+  @@index([status])
+  @@map("payments")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String?
+  action    String // e.g. COMPLAINT_ASSIGNED, USER_ROLE_CHANGED
+  entity    String // e.g. Complaint, User
+  entityId  String?
+  metadata  Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId])
+  @@index([entity, entityId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
