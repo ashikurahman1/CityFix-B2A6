@@ -1,0 +1,6 @@
+# dist/ is intentionally NOT ignored: `npm run build` locally, then `vercel --prod`
+node_modules
+.env
+.env.*
+.git
+docs
