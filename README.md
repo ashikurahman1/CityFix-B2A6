@@ -6,14 +6,14 @@ routed to the responsible department, assigned to staff, tracked against an SLA 
 feedback.
 
 **Stack:** Node.js · TypeScript · Express 5 · PostgreSQL · Prisma · Zod · JWT · Google OAuth · Stripe · Redis ·
-Multer + Cloudinary · tsup · Vercel
+Multer + Cloudinary · tsup · Netlify Functions
 
 ## Submission
 
 ```
 Project Name    : CityFix - City Complaint & Service Request Platform
-Backend Repo    : <your GitHub repository URL>
-Live API        : <your deployed URL>
+Backend Repo    : https://github.com/ashikurahman1/CityFix-B2A6
+Live API        : https://cityfix-b7a6.netlify.app
 API Docs        : <your published Postman documentation URL>
 Demo Video      : <your video URL>
 Admin Email     : admin@cityfix.com
@@ -216,19 +216,22 @@ Testing webhooks locally:
 stripe listen --forward-to localhost:5000/api/v1/payments/webhook   # prints the whsec_... secret
 ```
 
-## Deploy to Vercel
+## Deployment
 
-```bash
-npm run build      # dist/ is uploaded by the CLI (see .vercelignore)
-vercel --prod
-```
+The live API runs on **Netlify**: the whole Express app is wrapped as a single Netlify Function
+([netlify/functions/api.ts](netlify/functions/api.ts)) and [netlify.toml](netlify.toml) rewrites every request to it.
+Pushing to `main` triggers a new deploy.
 
-Then, in the Vercel project settings, add every variable from `.env.example` (with `APP_URL` set to the deployed
-URL), run `npx prisma migrate deploy` and `npm run db:seed` against the production database, and register:
+1. Import the GitHub repository in Netlify (build settings are read from `netlify.toml`).
+2. Add the variables from `.env.example` under *Site configuration → Environment variables*, with `APP_URL` set to
+   the site URL. Do not add `NODE_ENV`, `PORT` or the `SEED_*` variables.
+3. Run `npx prisma migrate deploy` and `npm run db:seed` once against the production database.
+4. Register the external callbacks:
+   - Google OAuth redirect URI: `{APP_URL}/api/v1/auth/google/callback`
+   - Stripe webhook endpoint: `{APP_URL}/api/v1/payments/webhook` (events: `checkout.session.completed`,
+     `checkout.session.expired`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`)
 
-- Google OAuth redirect URI: `{APP_URL}/api/v1/auth/google/callback`
-- Stripe webhook endpoint: `{APP_URL}/api/v1/payments/webhook` (events: `checkout.session.completed`,
-  `checkout.session.expired`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`)
+A [vercel.json](vercel.json) is also included: `npm run build` then `vercel --prod` deploys the same app to Vercel.
 
 Serverless notes: no cron jobs, WebSockets or local file writes are used. Uploads are streamed from memory to
 Cloudinary, cache lives in Redis, and the rate limiter keeps its counters per function instance.
