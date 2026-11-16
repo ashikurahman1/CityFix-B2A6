@@ -1,13 +1,13 @@
 {
   "info": {
     "name": "CityFix API - City Complaint & Service Request Platform",
-    "description": "REST API for the CityFix platform.\n\n**How to use**\n1. Set the `baseUrl` collection variable (local: http://localhost:5000).\n2. Run the three *Login as ...* requests: tokens are stored automatically.\n3. Run *List departments* and *List categories* once: they store the ids used by later requests.\n\nEvery response follows `{ success, message, data }` (plus `meta` on paginated lists) or `{ success: false, message, errors }`.",
+    "description": "REST API for the CityFix platform.\n\n**How to use**\n1. Set the `baseUrl` collection variable (live: https://cityfix-b7a6.netlify.app, local: http://localhost:5000).\n2. Run the three *Login as ...* requests: tokens are stored automatically.\n3. Run *List departments* and *List categories* once: they store the ids used by later requests.\n\nEvery response follows `{ success, message, data }` (plus `meta` on paginated lists) or `{ success: false, message, errors }`.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:5000"
+      "value": "https://cityfix-b7a6.netlify.app"
     },
     {
       "key": "citizenToken",
