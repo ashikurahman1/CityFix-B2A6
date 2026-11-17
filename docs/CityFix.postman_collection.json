@@ -1,5 +1,6 @@
 {
   "info": {
+    "_postman_id": "2ec615ca-0126-49e0-a6ff-4dc93bc30ca6",
     "name": "CityFix API - City Complaint & Service Request Platform",
     "description": "REST API for the CityFix platform.\n\n**How to use**\n1. Set the `baseUrl` collection variable (live: https://cityfix-b7a6.netlify.app, local: http://localhost:5000).\n2. Run the three *Login as ...* requests: tokens are stored automatically.\n3. Run *List departments* and *List categories* once: they store the ids used by later requests.\n\nEvery response follows `{ success, message, data }` (plus `meta` on paginated lists) or `{ success: false, message, errors }`.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -7,87 +8,108 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "https://cityfix-b7a6.netlify.app"
+      "value": "https://cityfix-b7a6.netlify.app",
+      "type": "string"
     },
     {
       "key": "citizenToken",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "staffToken",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "adminToken",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "citizenRefreshToken",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "staffRefreshToken",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "adminRefreshToken",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "citizenId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "staffId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "adminId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "departmentId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "newDepartmentId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "categoryId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "paidCategoryId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "newCategoryId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "complaintId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "trackingCode",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "serviceRequestId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "paymentId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "sessionId",
-      "value": ""
+      "value": "",
+      "type": "string"
     },
     {
       "key": "newUserId",
-      "value": ""
+      "value": "",
+      "type": "string"
     }
   ],
   "item": [
@@ -110,7 +132,8 @@
               ],
               "path": []
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Health check",
@@ -130,7 +153,8 @@
                 "health"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -172,7 +196,8 @@
                 "register"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Register - validation error",
@@ -209,7 +234,8 @@
                 "register"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Login as CITIZEN",
@@ -262,7 +288,8 @@
                 "login"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Login as STAFF (Roads)",
@@ -315,7 +342,8 @@
                 "login"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Login as ADMIN",
@@ -368,7 +396,8 @@
                 "login"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Google login (ID token)",
@@ -405,7 +434,8 @@
                 "google"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Google login (browser redirect)",
@@ -428,7 +458,8 @@
                 "google"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Refresh token",
@@ -477,7 +508,8 @@
                 "refresh-token"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Change password",
@@ -521,7 +553,8 @@
                 "change-password"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Logout",
@@ -565,7 +598,8 @@
                 "logout"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -600,7 +634,8 @@
                 "me"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update my profile",
@@ -644,7 +679,8 @@
                 "me"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Unauthorized (no token)",
@@ -667,7 +703,8 @@
                 "me"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -706,7 +743,8 @@
                 "departments"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get department",
@@ -729,7 +767,8 @@
                 "{{departmentId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Create department (admin)",
@@ -784,7 +823,8 @@
                 "departments"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update department (admin)",
@@ -828,7 +868,8 @@
                 "{{newDepartmentId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete department (admin, soft)",
@@ -858,7 +899,8 @@
                 "{{newDepartmentId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Create department as citizen (403)",
@@ -901,7 +943,8 @@
                 "departments"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -919,8 +962,8 @@
                   "const json = pm.response.json();",
                   "if (json.success) {",
                   "  const isFree = (c) => Number(c.serviceFee) === 0;",
-                "  // Prefer a Roads category so the seeded Roads staff account can claim / work on it.",
-                "  const free = json.data.find((c) => isFree(c) && c.department.name.startsWith(\"Roads\")) || json.data.find(isFree);",
+                  "  // Prefer a Roads category so the seeded Roads staff account can claim / work on it.",
+                  "  const free = json.data.find((c) => isFree(c) && c.department.name.startsWith(\"Roads\")) || json.data.find(isFree);",
                   "  const paid = json.data.find((c) => Number(c.serviceFee) > 0);",
                   "  if (free) pm.collectionVariables.set(\"categoryId\", free.id);",
                   "  if (paid) pm.collectionVariables.set(\"paidCategoryId\", paid.id);",
@@ -947,7 +990,8 @@
                 "categories"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "List paid service categories",
@@ -979,7 +1023,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get category",
@@ -1002,7 +1047,8 @@
                 "{{categoryId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Create category (admin)",
@@ -1057,7 +1103,8 @@
                 "categories"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update category (admin)",
@@ -1101,7 +1148,8 @@
                 "{{newCategoryId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete category (admin, soft)",
@@ -1131,7 +1179,8 @@
                 "{{newCategoryId}}"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -1191,7 +1240,8 @@
                 "complaints"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "File a complaint - validation error",
@@ -1234,7 +1284,8 @@
                 "complaints"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "List complaints (pagination + filter + sort + search)",
@@ -1289,7 +1340,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "List overdue complaints (admin, SLA)",
@@ -1332,7 +1384,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get complaint",
@@ -1362,7 +1415,8 @@
                 "{{complaintId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Track by code (public)",
@@ -1386,7 +1440,8 @@
                 "{{trackingCode}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update complaint (citizen)",
@@ -1430,7 +1485,8 @@
                 "{{complaintId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Change priority (admin triage)",
@@ -1474,7 +1530,8 @@
                 "{{complaintId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get complaint - 404",
@@ -1504,7 +1561,8 @@
                 "00000000-0000-4000-8000-000000000000"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -1544,7 +1602,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Assign to staff (admin)",
@@ -1589,7 +1648,8 @@
                 "assign"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Claim from queue (staff)",
@@ -1620,7 +1680,8 @@
                 "claim"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "My assigned complaints (staff)",
@@ -1655,7 +1716,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Start work (staff)",
@@ -1700,7 +1762,8 @@
                 "status"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Add internal note (staff)",
@@ -1745,7 +1808,8 @@
                 "comments"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Add comment (citizen)",
@@ -1790,7 +1854,8 @@
                 "comments"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "List comments",
@@ -1821,7 +1886,8 @@
                 "comments"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Upload attachments",
@@ -1862,7 +1928,8 @@
                 "attachments"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Resolve (staff)",
@@ -1907,7 +1974,8 @@
                 "status"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Invalid transition (409)",
@@ -1952,7 +2020,8 @@
                 "status"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Reopen (citizen)",
@@ -1997,7 +2066,8 @@
                 "reopen"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Feedback + close (citizen)",
@@ -2042,7 +2112,8 @@
                 "feedback"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Timeline",
@@ -2073,7 +2144,8 @@
                 "timeline"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Reject (admin)",
@@ -2118,7 +2190,8 @@
                 "status"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Cancel (citizen)",
@@ -2163,7 +2236,8 @@
                 "cancel"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete complaint (soft)",
@@ -2193,7 +2267,8 @@
                 "{{complaintId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Assign as citizen (403)",
@@ -2238,7 +2313,8 @@
                 "assign"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -2298,7 +2374,8 @@
                 "complaints"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Initiate payment",
@@ -2354,7 +2431,8 @@
                 "initiate"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Success redirect (verifies with Stripe)",
@@ -2383,7 +2461,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Cancel redirect",
@@ -2412,7 +2491,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Webhook (called by Stripe)",
@@ -2449,7 +2529,8 @@
                 "webhook"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Verify payment with gateway",
@@ -2480,7 +2561,8 @@
                 "verify"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Get payment",
@@ -2510,7 +2592,8 @@
                 "{{paymentId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "My payments",
@@ -2553,7 +2636,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "All payments (admin)",
@@ -2592,7 +2676,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Refund (admin)",
@@ -2637,7 +2722,8 @@
                 "refund"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -2694,7 +2780,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Create staff user",
@@ -2750,7 +2837,8 @@
                 "users"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Change user role",
@@ -2796,7 +2884,8 @@
                 "role"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Deactivate user",
@@ -2842,7 +2931,8 @@
                 "status"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete user (soft)",
@@ -2873,7 +2963,8 @@
                 "{{newUserId}}"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Dashboard statistics",
@@ -2903,7 +2994,8 @@
                 "dashboard-stats"
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Audit logs",
@@ -2947,7 +3039,8 @@
                 }
               ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Admin route as staff (403)",
@@ -2977,7 +3070,8 @@
                 "users"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -3005,7 +3099,8 @@
                 "public"
               ]
             }
-          }
+          },
+          "response": []
         }
       ]
     }

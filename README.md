@@ -14,7 +14,7 @@ Multer + Cloudinary · tsup · Netlify Functions
 Project Name    : CityFix - City Complaint & Service Request Platform
 Backend Repo    : https://github.com/ashikurahman1/CityFix-B2A6
 Live API        : https://cityfix-b7a6.netlify.app
-API Docs        : <your published Postman documentation URL>
+API Docs        : https://documenter.getpostman.com/view/49370216/2sBYHbrFjo
 Demo Video      : <your video URL>
 Admin Email     : admin@cityfix.com
 Admin Password  : Admin@12345
