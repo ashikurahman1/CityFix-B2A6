@@ -15,7 +15,7 @@ Project Name    : CityFix - City Complaint & Service Request Platform
 Backend Repo    : https://github.com/ashikurahman1/CityFix-B2A6
 Live API        : https://cityfix-b7a6.netlify.app
 API Docs        : https://documenter.getpostman.com/view/49370216/2sBYHbrFjo
-Demo Video      : <your video URL>
+Demo Video      : https://youtu.be/qKMX1FD5QQ8
 Admin Email     : admin@cityfix.com
 Admin Password  : Admin@12345
 ```
