@@ -40,6 +40,12 @@ const paymentSelect = {
   complaint: { select: { id: true, trackingCode: true, title: true, status: true, feeStatus: true } },
 } satisfies Prisma.PaymentSelect;
 
+/**
+ * Where Stripe sends the browser after checkout. The frontend pages call GET /payments/success|cancel
+ * themselves to verify the session; without CLIENT_URL the API's own endpoints are used directly.
+ */
+const returnBase = () => (env.CLIENT_URL ? `${env.CLIENT_URL}/payment` : `${env.APP_URL}/api/v1/payments`);
+
 /** Stripe expects the smallest currency unit (poisha / cents). */
 const toMinorUnits = (amount: Prisma.Decimal | number) => Math.round(Number(amount) * 100);
 
@@ -126,8 +132,8 @@ export async function initiatePayment(user: AuthUser, complaintId: string, ip: s
           },
         ],
         metadata: { paymentId: payment.id, complaintId: complaint.id, trackingCode: complaint.trackingCode },
-        success_url: `${env.APP_URL}/api/v1/payments/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${env.APP_URL}/api/v1/payments/cancel?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${returnBase()}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${returnBase()}/cancel?session_id={CHECKOUT_SESSION_ID}`,
       },
       { idempotencyKey: `checkout-${payment.id}` },
     );

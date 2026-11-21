@@ -11,6 +11,9 @@ const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(5000),
   APP_URL: z.string().default("http://localhost:5000"),
   CORS_ORIGIN: z.string().default("*"),
+  // Public URL of the web frontend. When set, Stripe sends the browser back to
+  // {CLIENT_URL}/payment/success|cancel instead of the API's own JSON endpoints.
+  CLIENT_URL: optional,
 
   DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
 
@@ -44,6 +47,7 @@ if (!parsed.success) {
 export const env = {
   ...parsed.data,
   APP_URL: parsed.data.APP_URL.replace(/\/+$/, ""),
+  CLIENT_URL: parsed.data.CLIENT_URL?.replace(/\/+$/, ""),
   // Serverless runtimes are always production, even when NODE_ENV is not set there.
   isProduction:
     parsed.data.NODE_ENV === "production" || Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME),
